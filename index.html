@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FoodSave – Comida boa, preço bom</title>
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="phone">
+<main id="app">
+
+<!-- LOGIN (RF01) -->
+<section class="screen" id="login">
+  <div class="body login">
+    <div class="logo">🌱</div>
+    <h1>FoodSave</h1>
+    <p>Comida boa com 50% de desconto. Reserve, retire e ajude a reduzir o desperdício.</p>
+    <input class="field" id="l-email" type="email" placeholder="E-mail ou telefone" aria-label="E-mail ou telefone">
+    <button class="btn light" id="l-enter">Entrar</button>
+    <button class="btn ghost light" id="l-social">Continuar com Google</button>
+  </div>
+</section>
+
+<!-- INÍCIO (RF12, RF13) -->
+<section class="screen tab" id="home">
+  <div class="body">
+    <div class="head"><p class="brand">FoodSave</p><button class="pill theme-btn" id="themeBtn" aria-label="Alternar tema claro e escuro">🌙</button></div>
+    <h1>Ofertas perto de você</h1>
+    <input id="q" class="field" type="search" placeholder="Produto ou estabelecimento" aria-label="Buscar">
+    <div class="chips" id="chips"></div>
+    <div class="seg"><button class="on" data-view="lista">Lista</button><button data-view="mapa">Mapa</button></div>
+    <div id="list"></div>
+    <div id="mapv" class="map hidden"></div>
+  </div>
+</section>
+
+<!-- DETALHE (RF14, RF15, RNF19) -->
+<section class="screen" id="detail">
+  <div class="top"><button class="pill" data-back>← Voltar</button><button class="pill" id="favbtn">♡ Favoritar</button></div>
+  <div class="body" id="detail-body"></div>
+  <div class="foot"><button class="btn" id="toCheckout">Reservar e pagar</button></div>
+</section>
+
+<!-- CHECKOUT (RF16, RF27) -->
+<section class="screen" id="checkout">
+  <div class="top"><button class="pill" data-back>← Voltar</button><span class="step">Pagamento</span></div>
+  <div class="body" id="checkout-body"></div>
+  <div class="foot"><button class="btn" id="payBtn">Pagar e gerar QR Code</button></div>
+</section>
+
+<!-- RESERVA CONFIRMADA (RF17) -->
+<section class="screen" id="confirm">
+  <div class="body" id="confirm-body"></div>
+</section>
+
+<!-- AVALIAR (RF21) -->
+<section class="screen" id="review">
+  <div class="top"><button class="pill" data-back>← Voltar</button><span class="step">Avaliação</span></div>
+  <div class="body">
+    <h1>Como foi a retirada?</h1>
+    <p class="muted" id="rev-for"></p>
+    <div class="stars" id="stars"></div>
+    <textarea id="rev-text" class="field" rows="4" placeholder="Conte como foi (opcional)"></textarea>
+  </div>
+  <div class="foot"><button class="btn" id="sendReview">Enviar avaliação</button></div>
+</section>
+
+<!-- FAVORITOS (RF22) -->
+<section class="screen tab" id="favs"><div class="body"><h1>Favoritos</h1><div id="favs-list"></div></div></section>
+
+<!-- RESERVAS (RF30) -->
+<section class="screen tab" id="reservas"><div class="body"><h1>Minhas reservas</h1><div id="res-list"></div></div></section>
+
+<!-- IMPACTO (RF33) -->
+<section class="screen tab" id="impacto"><div class="body" id="impact-body"></div></section>
+
+<!-- PERFIL (RF04) -->
+<section class="screen tab" id="perfil">
+  <div class="body">
+    <div class="avatar">M</div>
+    <h1>Maria Souza</h1>
+    <p class="muted">Perfil: usuária</p>
+    <p class="label">Trocar de perfil</p>
+    <button class="row-btn" data-go="novo">🏪 Sou estabelecimento: publicar oferta</button>
+    <button class="row-btn" data-go="doacoes">🤝 Sou ONG: ver doações</button>
+    <button class="row-btn" data-go="reservas">🧾 Histórico de transações</button>
+    <button class="row-btn theme-btn" id="themeRow">🌓 Alternar tema claro/escuro</button>
+    <button class="row-btn" id="resetData">♻️ Restaurar dados de demonstração</button>
+    <button class="row-btn" id="support">💬 Suporte e denúncias</button>
+  </div>
+</section>
+
+<!-- NOVA OFERTA (RF06, RF07) -->
+<section class="screen" id="novo">
+  <div class="top"><button class="pill" id="novoBack">← Voltar</button><span class="step" id="novoStep">Passo 1 de 3</span></div>
+  <div class="body">
+    <h1>Nova oferta</h1>
+    <div class="bar"><i id="novoBar"></i></div>
+    <div class="pane" data-p="1">
+      <label>Produto<input id="n-nome" class="field" placeholder="Ex.: Cesta de pães"></label>
+      <button class="photo" id="n-foto">+ Adicionar foto</button>
+      <div class="two">
+        <label>Quantidade<input id="n-qtd" class="field" type="number" min="1" value="3"></label>
+        <label>Preço original (R$)<input id="n-preco" class="field" type="number" min="1" step="0.5" placeholder="16,00"></label>
+      </div>
+      <div class="final">Preço final (50% off): <b id="n-final">R$ 0,00</b></div>
+    </div>
+    <div class="pane hidden" data-p="2">
+      <label>Validade<input id="n-val" class="field" type="date"></label>
+      <label>Horário de retirada<input id="n-ret" class="field" type="time" value="17:00"></label>
+      <label class="check"><input type="checkbox" id="n-doar" checked> Doar automaticamente se não for reservada</label>
+    </div>
+    <div class="pane hidden" data-p="3"><div class="card" id="n-resumo"></div></div>
+  </div>
+  <div class="foot"><button class="btn" id="novoNext">Continuar</button></div>
+</section>
+
+<!-- DOAÇÕES (RF23–RF26) -->
+<section class="screen" id="doacoes">
+  <div class="top"><button class="pill" data-back>← Voltar</button><span class="step">Perfil ONG</span></div>
+  <div class="body">
+    <h1>Doações disponíveis</h1>
+    <div class="chips"><span class="chip on">Hoje</span><span class="chip">Tipos aceitos</span><span class="chip">Distância</span></div>
+    <div id="don-list"></div>
+    <button class="btn ghost" id="histBtn">Histórico e comprovantes</button>
+    <div id="hist" class="hidden"></div>
+  </div>
+</section>
+
+</main>
+<nav id="nav">
+  <button data-go="home"><span>🏠</span>Início</button>
+  <button data-go="favs"><span>♡</span>Favoritos</button>
+  <button data-go="reservas"><span>🎟️</span>Reservas</button>
+  <button data-go="impacto"><span>🌱</span>Impacto</button>
+  <button data-go="perfil"><span>👤</span>Perfil</button>
+</nav>
+<div id="toast" role="status"></div>
+</div>
+<script src="js/storage.js"></script>
+<script src="js/offers.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
